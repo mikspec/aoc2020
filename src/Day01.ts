@@ -22,7 +22,7 @@ class PartA {
                         return ((index1 !== index2) && ((value1 + value2) === 2020))
                     });
                 }).filter((arr: number[]) => arr.length > 0).map(arr => arr.pop()).reduce((prev, curr)=> {
-                    return prev * curr;
+                    return (prev || 0) * (curr || 0);
                 }));
         });
     }
