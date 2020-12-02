@@ -1,5 +1,4 @@
 
-import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 import * as fs from 'fs';
 import * as readline from 'readline';
 
@@ -16,17 +15,46 @@ class PartA {
         });
 
         myInterface.on('close', () => {
-            console.log('Day01 part1 =',
-                expenses.map((value1, index1) => {
-                    return expenses.filter((value2, index2) => {
-                        return ((index1 !== index2) && ((value1 + value2) === 2020))
-                    });
-                }).filter((arr: number[]) => arr.length > 0).map(arr => arr.pop()).reduce((prev, curr)=> {
-                    return (prev || 0) * (curr || 0);
-                }));
+
+            const result = expenses.reduce(
+                (acc: number[], v, i) =>
+                    acc.concat(expenses.slice(i + 1).filter(w => w + v === 2020).map(w => w * v)), []).pop();
+            console.log('Day01 part1 =', result);
         });
     }
 }
 
 let partA = new PartA();
-partA.main(); 
+partA.main();
+
+class PartB {
+
+    main() {
+        let myInterface = readline.createInterface({
+            input: fs.createReadStream('data/day01.txt')
+        });
+
+        let expenses: number[] = [];
+        myInterface.on('line', (line) => {
+            expenses.push(parseInt(line));
+        });
+
+        myInterface.on('close', () => {
+
+            const result = expenses.reduce(
+                (acc: number[], v, i) => {
+                    let list2: number[] = expenses.slice(i + 1).filter(w => w + v < 2020);
+                    return acc.concat(
+                        list2.reduce(
+                            (acc2: number[], w, j) =>
+                                acc2.concat(list2.slice(j + 1)
+                                    .filter(z => v + w + z === 2020)
+                                    .map(z => v * w *z)), []));
+                }, []).pop();
+            console.log('Day01 part2 =', result);
+        });
+    }
+}
+
+let partB = new PartB();
+partB.main(); 

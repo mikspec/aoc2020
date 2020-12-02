@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/mikspec/aoc2020#readme",
   "dependencies": {
+    "immutable": "^4.0.0-rc.12",
     "nodemon": "^2.0.6"
   },
   "devDependencies": {
